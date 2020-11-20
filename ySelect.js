@@ -172,7 +172,10 @@
                 let min = flag <= $(this).index() ? flag : $(this).index()
                 let max = flag <= $(this).index() ? $(this).index() : flag
                 for(let i = min + 1; i < max; i++){
-                    $wrap.find('.fs-option').eq(i).toggleClass('selected');
+                    let isHidden = $wrap.find('.fs-option').eq(i).hasClass('hidden')
+                    if(!isHidden){
+                        $wrap.find('.fs-option').eq(i).toggleClass('selected');
+                    }
                 }
             }
             flag = $(this).index() 
