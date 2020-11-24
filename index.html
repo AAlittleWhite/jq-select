@@ -14,11 +14,12 @@
 <body>
     <div>如果改为单选 去掉 multiple="multiple" 属性</div>
     <div class="container">
-        <select id='m2' class="demo1"></select>
+        <select id='m2' class="demo1" multiple="multiple"></select>
         <button id="query" class="btn btn-primary btn-sm">查询值（有）</button>
         <button id="query1" class="btn btn-primary btn-sm">查询值（无）</button>
     <button id="current" class="btn btn-primary btn-sm">查看值</button>
     </div>
+    <img src='https://res.wx.qq.com/mpres/zh_CN/htmledition/pages/modules/common/emoji/images/smiley/smiley_634273fb.png' data-id='63'/>
 </body>
     <script>
         $(function() {
@@ -28,7 +29,10 @@
                     showSearch: true,
                     numDisplayed: 4,
                     overflowText: '已选中 {n}项',
-                    isCheck:false
+                    isCheck:false,
+                    callback: function(data){
+                        console.log(data)
+                    }
                 });
     
             $("#current").click(function(){
@@ -48,6 +52,34 @@
                         id: '3',
                         name: '太太乐鸡精'
                     },
+                    {
+                        id: '4',
+                        name: '气质女人1'
+                    },
+                    {
+                        id: '5',
+                        name: '气质女人01'
+                    },
+                    {
+                        id: '6',
+                        name: '气质女人02'
+                    },
+                    {
+                        id: '7',
+                        name: '气质女人03'
+                    },
+                    {
+                        id: '16',
+                        name: '直男2'
+                    },
+                    {
+                        id: '17',
+                        name: '直男3'
+                    },
+                    {
+                        id: '18',
+                        name: '气质女人5'
+                    }
                 ]
                 $.each(data, function (i, item) {
                     $(".demo1").append("<option value=" + item.id + ">"+ item.name + "</option>")

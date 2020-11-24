@@ -1,4 +1,5 @@
 (function ($) {
+    var global = null;
     $.fn.ySelect = function (options) {
         // 默认属性
         var defaultOptions = { 
@@ -6,7 +7,10 @@
             numDisplayed: 4, 
             overflowText: '已选中 {n}项', 
             searchText: '搜索', 
-            showSearch: true, 
+            showSearch: true,
+            callback: function(){
+
+            } 
         }
         if (typeof options == 'string') { 
             var settings = options; 
@@ -66,7 +70,6 @@
                 }else{
                     choices =  "<p class='empty'>暂无数据</p>"
                 } 
-                
                 return choices;
             }, 
             reloadDropdownLabel: function () {
@@ -99,6 +102,7 @@
             if (typeof settings == 'string') { 
                 data[settings](); 
             }
+            global = data
         });
     }
     // 是否按住shift键位
@@ -153,6 +157,8 @@
         }
         $(this).addClass('selected');
         $(this).closest('.fs-wrap').find('select').ySelect('reloadDropdownLabel');
+        // 执行回调
+        cb()
     }); 
     $(document).on('click', '.fs-selectAll.selected', function () { 
         var curOption = $(this).parent().next().find('.fs-option')
@@ -164,6 +170,8 @@
         } 
         $(this).removeClass('selected'); 
         $(this).closest('.fs-wrap').find('select').ySelect('reloadDropdownLabel');
+        // 执行回调
+        cb()
     }); 
     $(document).on('click', '.fs-option', function () {
         var $wrap = $(this).closest('.fs-wrap');
@@ -195,6 +203,8 @@
         $wrap.find('select').val(selected); 
         $wrap.find('select').ySelect('reloadDropdownLabel'); 
         $wrap.find('select').ySelect('setwrap');
+        // 执行回调
+        cb()
     }); 
     $(document).on('keyup', '.fs-search input', function (e) {
         if (40 == e.which) { $(this).blur(); return; }
@@ -227,6 +237,8 @@
         }
         $('.fs-wrap').find('.fs-label').text('请选择')
         $wrap.find('.fs-search').find("input[type='search']").val('')
+        // 执行回调
+        cb()
     })
     $(document).on('click', function (e) {
         var $el = $(e.target); 
@@ -310,6 +322,18 @@
         $('.fs-wrap').find('.fs-options').html(choices);
         $('.fs-wrap').find('.fs-selectAll').removeClass('selected') 
         $('.fs-wrap').find('.fs-search').find("input[type='search']").val('')
+        // 执行回调
+        cb()
+    }
+    function cb() {
+        let result = [];
+        let a = global.$wrap.find(".fs-option")
+        for (var i = 0; i < a.length; i++) {
+            if($(a[i]).hasClass('selected')){
+                result.push($(a[i]).attr('data-value')); 
+            }
+        }
+        global.settings.callback(result)
     }
     $.fn.ySelectedValues = function () {
         var result = [];
